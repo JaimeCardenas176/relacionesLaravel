@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'password' => '1234',
          ]);
 
-         \App\Models\User::factory(10)->create();
+         \App\Models\User::factory(30)->create();
 
          \App\Models\Category::factory()->create([
             'name'=> 'normal'
