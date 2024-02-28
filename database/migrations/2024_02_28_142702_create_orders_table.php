@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->date('pickup_date');
-            $table->date('pickup_time');
+            $table->time('pickup_time');
             $table->string('payment_method');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
@@ -28,4 +28,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('orders');
     }
+
+ 
 };

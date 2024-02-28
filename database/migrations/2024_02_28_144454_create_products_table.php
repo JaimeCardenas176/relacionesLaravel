@@ -27,4 +27,20 @@ return new class extends Migration
     {
         Schema::dropIfExists('products');
     }
+
+    public function normal()
+    {
+        return $this->afterCreating(function (Producto $producto) {
+            $categoriaA = Categoria::firstOrCreate(['name' => 'normal']);
+            $producto->categorias()->attach($categoriaA);
+        });
+    }
+
+    public function delivery()
+    {
+        return $this->afterCreating(function (Producto $producto) {
+            $categoriaB = Categoria::firstOrCreate(['name' => 'delivery']);
+            $producto->categorias()->attach($categoriaB);
+        });
+    }
 };

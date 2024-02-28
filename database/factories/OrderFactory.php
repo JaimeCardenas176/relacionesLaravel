@@ -17,9 +17,9 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'pickup_date' => fake()->date(),
-            'pickup_time' => fake()->time(),
-            'payment_method'=> 'tarjeta',
+            'pickup_date' => fake()->date('Y-m-d'),
+            'pickup_time' => fake()->time('H:i:s'),
+            'payment_method'=> "tarjeta",
             'user_id' => 1,
         ];
     }
