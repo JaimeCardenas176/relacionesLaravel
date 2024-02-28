@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('category_product', function (Blueprint $table) {
-            $table->id();
+
             $table->foreignIdFor(\App\Models\Product::class);
+
             $table->foreignIdFor(\App\Models\Category::class);
         });
     }

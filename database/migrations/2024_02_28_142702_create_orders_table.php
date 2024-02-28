@@ -16,7 +16,9 @@ return new class extends Migration
             $table->date('pickup_date');
             $table->time('pickup_time');
             $table->string('payment_method');
+
             $table->unsignedBigInteger('user_id');
+            
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

@@ -11,7 +11,7 @@ class Order extends Model
     use HasFactory;
     public $timestamps =false;
 
-    public function user()
+    public function user() //la magia de laravel se hace por que lo indique en las migrations (linea 22 de la migrations de order)
     {
         return $this->belongsTo(user::class);
     }
@@ -20,4 +20,5 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
 }

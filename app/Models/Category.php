@@ -10,6 +10,7 @@ class Category extends Model
     use HasFactory;
 
     public $timestamps =false;
+    
     public function products()
     {
         return $this->belongsToMany(Product::class);
