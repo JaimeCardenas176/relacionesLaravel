@@ -31,16 +31,16 @@ return new class extends Migration
     public function normal()
     {
         return $this->afterCreating(function (Producto $producto) {
-            $categoriaA = Categoria::firstOrCreate(['name' => 'normal']);
-            $producto->categorias()->attach($categoriaA);
+            $categoriaNormal= Category::firstOrCreate(['name' => 'normal']);
+            $producto->categories()->attach($categoriaNormal);
         });
     }
 
     public function delivery()
     {
         return $this->afterCreating(function (Producto $producto) {
-            $categoriaB = Categoria::firstOrCreate(['name' => 'delivery']);
-            $producto->categorias()->attach($categoriaB);
+            $categoriaDelivery = Category::firstOrCreate(['name' => 'delivery']);
+            $producto->categories()->attach($categoriaDelivery);
         });
     }
 };

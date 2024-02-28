@@ -40,7 +40,25 @@ class UserFactory extends Factory
     public function configure(){
         return $this->afterCreating(function (User $user) {
             // Crea 3 pedidos para cada usuario
-            Order::factory()->count(3)->create([
+            Order::factory()->create([
+                'pickup_date' => fake()->date('Y-m-d'),
+                'pickup_time' => fake()->time('H:i:s'),
+                'payment_method'=> 'card',
+                'user_id' => $user->id,
+            ]);
+
+            Order::factory()->create([
+                'pickup_date' => fake()->date('Y-m-d'),
+                'pickup_time' => fake()->time('H:i:s'),
+                'payment_method'=> 'card',
+                'user_id' => $user->id,
+            ]);
+
+            // Crear una orden "cash" para cada usuario
+            Order::factory()->create([
+                'pickup_date' => fake()->date('Y-m-d'),
+                'pickup_time' => fake()->time('H:i:s'),
+                'payment_method'=> 'cash',
                 'user_id' => $user->id,
             ]);
         });
