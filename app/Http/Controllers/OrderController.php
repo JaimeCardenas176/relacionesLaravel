@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -22,15 +23,17 @@ class OrderController extends Controller
                 'pickup_date' => 'required|date',
                 'pickup_time' => 'required|date_format:H:i:s',
                 'payment_method' => 'required|string',
-                'user_id' => 'required|exists:users,id',
             ]);
 
-            // Crear una nueva orden
+            // Obtener el usuario autenticado
+            $user = $request->user();
+
+            // Crear una nueva orden asociada al usuario autenticado
             $order = new Order();
-            $order->pickup_date = $request->input('pickup_date'); // Utilizar input() para acceder a los datos de la solicitud
-            $order->pickup_time = $request->input('pickup_time'); // Utilizar input() para acceder a los datos de la solicitud
-            $order->payment_method = $request->input('payment_method'); // Utilizar input() para acceder a los datos de la solicitud
-            $order->user_id = $request->input('user_id'); // Utilizar input() para acceder a los datos de la solicitud
+            $order->pickup_date = $request->input('pickup_date');
+            $order->pickup_time = $request->input('pickup_time');
+            $order->payment_method = $request->input('payment_method');
+            $order->user_id = $user->id;
             $order->save();
 
             // Devolver una respuesta de éxito
@@ -50,11 +53,11 @@ class OrderController extends Controller
     public function history(Request $request)
     {
         try {
-            // Obtener el ID de usuario de la solicitud
-            $userId = $request->input('user_id');
-
+            // Obtener el usuario autenticado
+            $user = $request->user();
+            echo $user;
             // Obtener la lista de órdenes del usuario paginadas
-            $orders = Order::where('user_id', $userId)->paginate(15); // Filtrar órdenes por ID de usuario y paginar resultados
+            $orders = Order::where('user_id', $user->id)->paginate(15);
 
             // Devolver la respuesta JSON con la lista de órdenes paginadas
             return response()->json($orders);

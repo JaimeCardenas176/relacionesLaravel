@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -24,19 +25,21 @@ class UserController extends Controller
                 'password' => 'required|string',
             ]);
 
-            // Buscar al usuario por su correo electrónico
-            $user = User::where('email', $request->email)->first();
+            // Intentar autenticar al usuario utilizando las credenciales proporcionadas
+            if (Auth::attempt($request->only('email', 'password'))) {
+                // Autenticación exitosa, obtener el usuario autenticado
+                $user = Auth::user();
 
-            // Verificar si el usuario existe y si la contraseña es válida
-            if (!$user || !Hash::check($request->password, $user->password)) {
+                // Generar token de acceso
+                $token = $user->createToken('auth_token')->plainTextToken;
+                unset($user['id'], $user['created_at'], $user['updated_at']);
+
+                // Devolver el token y la información del usuario como respuesta
+                return response()->json(['user' => $user, 'token' => $token], 200);
+            } else {
+                // Si las credenciales son inválidas, devolver un error de autenticación
                 return response()->json(['error' => 'Invalid credentials'], 401);
             }
-
-            // Autenticación exitosa, generar token de acceso
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            // Devolver el token como respuesta
-            return response()->json(['token' => $token], 200);
         } catch (\Exception $e) {
             // Capturar cualquier excepción y devolver una respuesta de error
             return response()->json(['error' => 'Failed to log in: ' . $e->getMessage()], 500);

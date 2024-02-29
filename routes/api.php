@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Fruitcake\Cors\HandleCors; // Importa el middleware de CORS
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
@@ -21,39 +20,28 @@ use App\Http\Controllers\CategoryController;
 |
 */
 
-Route::middleware(HandleCors::class)->group(function () {
-
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-        return $request->user();
-    });
-
-    Route::controller(UserControlle::class)->group(function(){
-
-        Route::post("/login", "login");
-        Route::post("/signup", "signup");
+Route::controller(UserController::class)->group(function () {
+    Route::post("/login", "login");
+    Route::post("/signup", "signup");
+    Route::middleware('auth:sanctum')->group(function () {
         Route::post("/edit", "edit");
         Route::post("/forgot", "forgot");
         Route::post("/changePassword", "changePassword");
-
     });
+});
 
-    Route::controller(ProductController::class)->group(function(){
-
-        Route::get("/products/get", "getAll");
-        Route::post("/search/{text}", "search");
-
-    });
-
-    Route::controller(OrderController::class)->group(function(){
-
+Route::middleware('auth:sanctum')->group(function () {
+    Route::controller(OrderController::class)->group( function() {
         Route::post("/setOrder", "login");
         Route::get("/history/get", "history");
-
     });
+});
 
-    Route::controller(OrderController::class)->group(function(){
+Route::controller(CategoryController::class, function ($router) {
+    Route::get("/categories/get", "getAll");
+});
 
-        Route::get("/categories/get", "getAll");
-
-    });
+Route::controller(ProductController::class)->group(function () {
+    Route::get("/products/get", "getAll");
+    Route::post("/search/{text}", "search");
 });
