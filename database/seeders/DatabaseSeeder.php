@@ -20,9 +20,10 @@ class DatabaseSeeder extends Seeder
             'phone' => '666666666',
             'address' => 'mi casa',
             'password' => '1234',
+            'type' => 1
          ]);
 
-         \App\Models\User::factory(30)->create();
+         \App\Models\User::factory(99)->create();
 
          \App\Models\Category::factory()->create([
             'name'=> 'normal'

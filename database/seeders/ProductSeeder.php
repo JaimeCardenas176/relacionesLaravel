@@ -29,7 +29,8 @@ class ProductSeeder extends Seeder
     {
         // Lógica para asociar el producto a la categoría normal
         $categoriaNormal = Category::firstOrCreate(['name' => 'normal']);
-        $producto->Categories()->attach($categoriaNormal);
+        $producto->categories()->attach($categoriaNormal);
+        $categoriaNormal->products()->attach($producto);
     }
 
     private function delivery($producto)
@@ -37,5 +38,7 @@ class ProductSeeder extends Seeder
         // Lógica para asociar el producto a la categoría delivery
         $categoriaDelivery = Category::firstOrCreate(['name' => 'delivery']);
         $producto->categories()->attach($categoriaDelivery);
+        $categoriaDelivery->products()->attach($producto);
     }
+
 }
